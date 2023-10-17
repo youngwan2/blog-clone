@@ -1,6 +1,7 @@
 import Image from "next/image";
 import MarkdownView from "@/components/MarkdownView";
-import { Post, getPostMarkdown } from "@/service/posts";
+import { Post, getPostMarkdown,getAllPosts } from "@/service/posts";
+import NextPostButton from "@/components/NextPostButton";
 
 type Props = {
   params: {
@@ -10,6 +11,7 @@ type Props = {
 export default async function PostsDetail({ params }: Props) {
   console.log(params.path);
 
+  const posts:Post[] = getAllPosts()
   const { metaData, data } = await getPostMarkdown(params.path);
   const { title, description, date, category, path } = metaData as Post;
 
@@ -30,6 +32,7 @@ export default async function PostsDetail({ params }: Props) {
       </article>
       <hr />
       <MarkdownView markdown={data} />
+      <NextPostButton path ={params.path||''} posts={posts}/>
     </section>
   );
 }
